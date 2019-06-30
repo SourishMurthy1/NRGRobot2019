@@ -3,16 +3,15 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.HatchClaw;
-import frc.robot.commands.HatchExtension;
 
 /**
  * A Subsystem to control the Extension of the hatch mechanism
  */
 public class HatchExtensionSubsystem extends Subsystem {
   public static final double HATCH_EXTEND_DELAY = 0.5;
-  
-  public enum State{
+  private State state = State.RETRACT; 
+
+  public enum State {
     EXTEND, RETRACT;
   }
 
@@ -21,11 +20,17 @@ public class HatchExtensionSubsystem extends Subsystem {
     setDefaultCommand(null);
   }
 
-  public void extend(){
+  public void extend() {
     RobotMap.hatchExtensionSolenoid.set(Value.kForward);
+    state = State.EXTEND;
   }
-    
-  public void retract(){
+
+  public void retract() {
     RobotMap.hatchExtensionSolenoid.set(Value.kReverse);
+    state = State.RETRACT;
+  }
+
+  public boolean isRetracted() {
+    return state == State.RETRACT;
   }
 }

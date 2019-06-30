@@ -9,20 +9,18 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
-import frc.robot.subsystems.Arm;
 
 public class InterruptAllCommands extends Command {
   public InterruptAllCommands() {
     // Use requires() here to declare subsystem dependencies
     requires(Robot.arm);
     requires(Robot.cargoAcquirer);
-    requires(Robot.climberMotor);
+    requires(Robot.climberRear);
     requires(Robot.climberPistons);
     requires(Robot.drive);
     requires(Robot.gearbox);
     requires(Robot.hatchClaw);
     requires(Robot.hatchExtension);
-
   }
 
   // Called just before this Command runs the first time

@@ -1,5 +1,7 @@
 package frc.robot.commands;
 
+import org.opencv.core.Point;
+
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.Robot;
 import jaci.pathfinder.Trajectory;
@@ -10,6 +12,7 @@ import jaci.pathfinder.Trajectory;
 public class FollowTrajectory extends Command {
 
   Trajectory trajectory;
+
   public FollowTrajectory(Trajectory trajectory) {
     requires(Robot.drive);
     this.trajectory = trajectory;
@@ -17,25 +20,32 @@ public class FollowTrajectory extends Command {
 
   @Override
   protected void initialize() {
-    System.out.println("Follow Trajectory Init");
-    Robot.drive.followTrajectoryInit(trajectory);
+    Point position = Robot.positionTracker.getPosition();
+    System.out.println(String.format("Follow Trajectory Init: x = %.1f, y = %.1f", position.x,position.y));
+    if (trajectory != null) {
+      Robot.drive.followTrajectoryInit(trajectory);
+    }
   }
 
   @Override
   protected void execute() {
-    Robot.drive.followTrajectoryExecute();
+    if (trajectory != null) {
+      Robot.drive.followTrajectoryExecute();
+    }
   }
 
   @Override
   protected boolean isFinished() {
-    return Robot.drive.followTrajectoryIsFinished();
+    return trajectory == null || Robot.drive.followTrajectoryIsFinished();
   }
 
   @Override
   protected void end() {
-    Robot.drive.followTrajectoryEnd();
-    System.out.println("Follow Trajectory End");
-  }
+    if (trajectory != null) {
+      Robot.drive.followTrajectoryEnd();
+    }
+    Point position = Robot.positionTracker.getPosition();
+    System.out.println(String.format("Follow Trajectory End: x = %.1f, y = %.1f", position.x,position.y));  }
 
   @Override
   protected void interrupted() {

@@ -3,7 +3,6 @@ package frc.robot.subsystems;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
-import frc.robot.commands.GearShift;
 
 /**
  * A Subsystem to control gearbox shifting.
@@ -14,16 +13,31 @@ public class Gearbox extends Subsystem {
     HIGH, LOW;
   }
 
+  public Gear state = Gear.HIGH;
+
   @Override
   public void initDefaultCommand() {
-    // setDefaultCommand(new GearShift(Gear.LOW));
   }
 
-  public void setHighGear(){
+  public void setHighGear() {
     RobotMap.gearboxSolenoid.set(Value.kForward);
+    state = Gear.HIGH;
   }
 
-  public void setLowGear(){
+  public void setLowGear() {
     RobotMap.gearboxSolenoid.set(Value.kReverse);
+    state = Gear.LOW;
+  }
+
+  public void toggleGears() {
+    if (state == Gear.HIGH) {
+      setLowGear();
+    } else {
+      setHighGear();
+    }
+  }
+
+  public Gear getState() {
+    return this.state;
   }
 }

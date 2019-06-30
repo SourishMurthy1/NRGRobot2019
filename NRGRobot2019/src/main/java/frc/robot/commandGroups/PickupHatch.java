@@ -7,27 +7,28 @@
 
 package frc.robot.commandGroups;
 
-import static frc.robot.subsystems.HatchClawSubsystem.State.OPEN;
-import static frc.robot.subsystems.HatchExtensionSubsystem.State.EXTEND;
-import static frc.robot.subsystems.HatchExtensionSubsystem.State.RETRACT;
 import static frc.robot.subsystems.HatchExtensionSubsystem.HATCH_EXTEND_DELAY;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import frc.robot.commands.DelaySeconds;
+import frc.robot.commands.DriveStraightDistance;
 import frc.robot.commands.DriveToVisionTape;
 import frc.robot.commands.HatchClaw;
-import frc.robot.commands.HatchExtension;
-import frc.robot.commands.DriveToVisionTape.Deliver;
+import frc.robot.commands.WaitForNewVisionData;
+import frc.robot.subsystems.HatchClawSubsystem.State;
+import frc.robot.utilities.VisionTargetsApproach;
 
-public class PickupHatchWithVision extends CommandGroup {
+public class PickupHatch extends CommandGroup {
   /**
    * Add your docs here.
    */
-  public PickupHatchWithVision() {
-    addSequential(new DriveToVisionTape(Deliver.Hatch));
-    addSequential(new HatchExtension(EXTEND));
+  public PickupHatch() {
+    addSequential(new HatchClaw(State.CLOSE));
+    addSequential(new WaitForNewVisionData());
+    addSequential(new DriveToVisionTape(VisionTargetsApproach.HatchPickUp), 2.0);
+    addParallel(new DriveStraightDistance(6, 0.35), 1);
+    addSequential(new HatchClaw(State.OPEN));
     addSequential(new DelaySeconds(HATCH_EXTEND_DELAY));
-    addSequential(new HatchClaw(OPEN));
-    addSequential(new HatchExtension(RETRACT));
+    addSequential(new DriveStraightDistance(6, -0.5));
   }
 }

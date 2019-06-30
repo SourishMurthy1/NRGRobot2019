@@ -1,7 +1,6 @@
 package frc.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
-import frc.robot.Robot;
 import frc.robot.RobotMap;
 import frc.robot.commands.ManualCargoAcquirer;
 
@@ -18,18 +17,18 @@ public class CargoAcquirer extends Subsystem {
     setDefaultCommand(new ManualCargoAcquirer());
   }
 
-  public void acquire(double power, Direction direction){
+  public void acquire(double power, Direction direction) {
     power = Math.abs(power);
 
     if (direction == Direction.ACQUIRE) {
       rawAcquire(-power);
     } else {
       rawAcquire(power);
+    }
   }
-}
-  
+
   public void rawAcquire(double power) {
-    RobotMap.cargoAcquirerMotor.set(power*0.5);
+    RobotMap.cargoAcquirerMotor.set(power * 0.5);
   }
 
   public void stop() {

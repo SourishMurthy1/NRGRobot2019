@@ -5,17 +5,19 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import frc.robot.RobotMap;
 
 /**
- * Extends or retracts the 3 climber pistons.
+ * Extends or retracts the 2 front pistons
  */
 public class ClimberPistons extends Subsystem {
+  public enum State {
+    EXTEND, RETRACT;
+  }
 
-  public void activate(boolean extend) {
-    Value direction = extend ? Value.kForward : Value.kReverse;
-
+  public void setState(State state) {
+    Value direction = state == State.EXTEND ? Value.kReverse : Value.kForward;
     RobotMap.climberSolenoid.set(direction);
   }
 
   @Override
-  protected void initDefaultCommand() {
+  public void initDefaultCommand() {
   }
 }
